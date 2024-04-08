@@ -15,5 +15,9 @@ namespace CarImpoundSystem.Controllers
         {
             return View();
         }
+        public IActionResult SearchByLicense()
+        {
+            return View();
+        }
     }
 }

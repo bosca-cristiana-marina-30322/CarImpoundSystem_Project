@@ -6,14 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
 // DbContext Configuration
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
+builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(connectionString));
 
-var b = WebApplication.CreateBuilder(args);
-var connectionString = b.Configuration.GetConnectionString("DefaultConnectionString");
+// Add Authorization services
+builder.Services.AddAuthorization();
 
-b.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(connectionString));
-
-var app = b.Build();
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
