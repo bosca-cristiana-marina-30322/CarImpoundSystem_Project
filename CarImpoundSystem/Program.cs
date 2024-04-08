@@ -1,9 +1,19 @@
+using CarImpoundSystem.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+// DbContext Configuration
+
+var b = WebApplication.CreateBuilder(args);
+var connectionString = b.Configuration.GetConnectionString("DefaultConnectionString");
+
+b.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(connectionString));
+
+var app = b.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
