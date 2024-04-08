@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarImpoundSystem.Models
 {
     public class Payment
     {
+        [Key]
         public string paymentId { get; set; }
 
         public DateTime date { get; set; }
