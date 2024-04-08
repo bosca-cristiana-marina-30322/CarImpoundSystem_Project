@@ -2,6 +2,14 @@
   "dependencies": {
     "secrets1": {
       "type": "secrets.user"
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ServiceLinker/locations/uksouth/connectors/ConnectionStringsDefaultConnectionString_67B2879A5C",
+      "secretStore": "LocalSecretsFile",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/carimpound/databases/CarImpound",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:DefaultConnectionString",
+      "dynamicId": null
     }
   }
 }
