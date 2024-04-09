@@ -17,6 +17,7 @@ namespace CarImpoundSystem.Controllers
             return View();
         }
 
+        [HttpPost]
         public IActionResult Login(string username, string password)
         {
             // Perform authentication here (e.g., check credentials against database)
