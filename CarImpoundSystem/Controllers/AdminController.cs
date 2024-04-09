@@ -25,6 +25,11 @@ namespace CarImpoundSystem.Controllers
 
             return View();
         }
+        public ActionResult EditImpound()
+        {
+
+            return View();
+        }
 
         [HttpGet]
         public ActionResult Login(string username, string password)

@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<CarImpoundSystem.Models.ImpoundmentRecord>
 
 @{
-    ViewData["Title"] = "Impounds";
+    ViewData["Title"] = "EditImpound";
 }
 
-<h1>Impounds</h1>
+<h1>EditImpound</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -37,6 +37,7 @@
         </tr>
     </thead>
     <tbody>
+
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -66,6 +67,7 @@
                 <a asp-action="Delete" asp-route-id="@item.recordId">Delete</a>
             </td>
         </tr>
+
 }
     </tbody>
 </table>

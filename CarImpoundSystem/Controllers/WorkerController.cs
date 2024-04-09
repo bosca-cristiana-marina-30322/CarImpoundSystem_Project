@@ -46,7 +46,7 @@ namespace CarImpoundSystem.Controllers
             {
                 // Authentication successful, redirect to index page
                 // You may also want to implement actual authentication logic here
-                return RedirectToAction("Index", "Worker");
+                return RedirectToAction("Impound", "Worker");
             }
 
             // Authentication failed, display an error message
