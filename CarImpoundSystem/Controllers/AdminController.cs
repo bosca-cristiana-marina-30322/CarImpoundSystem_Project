@@ -26,23 +26,38 @@ namespace CarImpoundSystem.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Login(string username, string password)
+        {
+            // Perform authentication here (e.g., check credentials against database)
+            // For simplicity, let's assume username is "admin" and password is "password"
+            if (username == "admin" && password == "password")
+            {
+                // Authentication successful, redirect to index page
+                // You may also want to implement actual authentication logic here
+                return RedirectToAction("Index", "Admin");
+            }
 
+            // Authentication failed, display an error message
+            ViewBag.ErrorMessage = "Invalid username or password.";
+            return View();
+        }
 
 
         [HttpGet]
-        public IActionResult Login()
+        public ActionResult Index()
         {
             if (!User.Identity.IsAuthenticated)
             { 
             
-                return RedirectToAction("Login","Admin");//views unde sa redirect daca nu e ok
+                return RedirectToAction("Login","Worker");//views unde sa redirect daca nu e ok
             
             }
 
-            if (!authService.HasRole(User.Identity.Name, "Admin"))
+           // if (!authService.HasRole(User.Identity.Name, "Admin"))
             {
                 // Unauthorized access
-                return RedirectToAction("Unauthorized", "Account");
+            //    return RedirectToAction("Unauthorized", "Account");
             }
             return View();
         }

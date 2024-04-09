@@ -17,7 +17,27 @@ namespace CarImpoundSystem.Controllers
             return View();
         }
 
-        [HttpPost]
+        public IActionResult Index()
+        {
+            // Check if user is authenticated
+            if (!User.Identity.IsAuthenticated)
+            {
+                // Redirect to worker login page
+                return RedirectToAction("Login", "Worker");
+
+            }
+
+            // Check if user has the correct role
+            if (!authService.HasRole(User.Identity.Name, "Worker"))
+            {
+                // Unauthorized access
+                return RedirectToAction("Unauthorized", "Account");
+            }
+
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult Login(string username, string password)
         {
             // Perform authentication here (e.g., check credentials against database)
@@ -39,24 +59,6 @@ namespace CarImpoundSystem.Controllers
             return View();
         }
 
-        public IActionResult Index()
-        {
-            // Check if user is authenticated
-            if (!User.Identity.IsAuthenticated)
-            {
-                // Redirect to worker login page
-                return RedirectToAction("Login", "Worker");
-               
-            }
-           
-            // Check if user has the correct role
-            if (!authService.HasRole(User.Identity.Name, "Worker"))
-            {
-                // Unauthorized access
-                return RedirectToAction("Unauthorized", "Account");
-            }
-
-            return View();
-        }
+       
     }
 }
