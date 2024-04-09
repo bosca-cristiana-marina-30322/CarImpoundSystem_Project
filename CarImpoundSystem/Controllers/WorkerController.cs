@@ -17,6 +17,27 @@ namespace CarImpoundSystem.Controllers
             return View();
         }
 
+        public IActionResult Login(string username, string password)
+        {
+            // Perform authentication here (e.g., check credentials against database)
+            // For simplicity, let's assume username is "admin" and password is "password"
+            if (username == "admin" && password == "password")
+            {
+                // Authentication successful, redirect to index page
+                // You may also want to implement actual authentication logic here
+                return RedirectToAction("Index", "Worker");
+            }
+
+            // Authentication failed, display an error message
+            ViewBag.ErrorMessage = "Invalid username or password.";
+            return View();
+        }
+
+        public IActionResult Impound()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             // Check if user is authenticated

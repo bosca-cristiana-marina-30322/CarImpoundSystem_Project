@@ -1,4 +1,5 @@
 using CarImpoundSystem.Data;
+using CarImpoundSystem.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,13 +7,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
 // DbContext Configuration
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
 builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(connectionString));
 
 // Add Authorization services
 builder.Services.AddAuthorization();
+
+// Register AuthService
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 
@@ -36,4 +39,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-

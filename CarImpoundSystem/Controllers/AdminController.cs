@@ -25,8 +25,12 @@ namespace CarImpoundSystem.Controllers
 
             return View();
         }
+
+
+
+
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Login()
         {
             if (!User.Identity.IsAuthenticated)
             { 
@@ -40,8 +44,6 @@ namespace CarImpoundSystem.Controllers
                 // Unauthorized access
                 return RedirectToAction("Unauthorized", "Account");
             }
-
-
             return View();
         }
     }
