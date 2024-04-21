@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CarImpoundSystem.Models.ImpoundmentRecord>
+﻿@model CarImpoundSystem.Models.ImpoundmentRecord
 
 @{
     ViewData["Title"] = "EditImpound";
@@ -6,68 +6,56 @@
 
 <h1>EditImpound</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.reason)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.payment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.vehicle)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<h4>ImpoundmentRecord</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditImpound">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="recordId" />
+            <div class="form-group">
+                <label asp-for="date" class="control-label"></label>
+                <input asp-for="date" class="form-control" />
+                <span asp-validation-for="date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="location" class="control-label"></label>
+                <input asp-for="location" class="form-control" />
+                <span asp-validation-for="location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="reason" class="control-label"></label>
+                <input asp-for="reason" class="form-control" />
+                <span asp-validation-for="reason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="payment" class="control-label"></label>
+                <input asp-for="payment" class="form-control" />
+                <span asp-validation-for="payment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="status" class="control-label"></label>
+                <input asp-for="status" class="form-control" />
+                <span asp-validation-for="status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LicensePlate" class="control-label"></label>
+                <select asp-for="LicensePlate" class="form-control" asp-items="ViewBag.LicensePlate"></select>
+                <span asp-validation-for="LicensePlate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
 
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.reason)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.payment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.vehicle.LicensePlate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.recordId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.recordId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.recordId">Delete</a>
-            </td>
-        </tr>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
-}
-    </tbody>
-</table>

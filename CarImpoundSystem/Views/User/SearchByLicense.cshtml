@@ -1,4 +1,7 @@
-﻿@{
+﻿@model IEnumerable<CarImpoundSystem.Models.ImpoundmentRecord>
+
+
+@{
     ViewData["Title"] = "Search By License Plate";
 }
 
@@ -16,16 +19,16 @@
         <div class="row mt-5">
             <div class="col-md-6 offset-md-3">
                 <h2 class="text-center mb-4">Search By License Plate</h2>
-                <form>
+                <form method="get" action="@Url.Action("ViewImpound", "User")">
                     <div class="form-group">
                         <label for="licensePlateInput">License Plate:</label>
-                        <input type="text" class="form-control" id="licensePlateInput" placeholder="Enter License Plate">
+                        <input type="text" name="licensePlate" class="form-control" id="licensePlateInput" placeholder="Enter License Plate">
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Search</button>
                 </form>
             </div>
         </div>
-    </div>
+    </div> 
 
 </body>
 </html>

@@ -8,8 +8,7 @@
       "secretStore": "LocalSecretsFile",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/carimpound/databases/CarImpound",
       "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:DefaultConnectionString",
-      "dynamicId": null
+      "connectionId": "ConnectionStrings:DefaultConnectionString"
     }
   }
 }

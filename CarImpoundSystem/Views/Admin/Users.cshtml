@@ -1,0 +1,50 @@
+﻿@model IEnumerable<CarImpoundSystem.Models.User>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>View Users</h1>
+
+<p>
+    <a asp-action="Create">Create New User</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.password)
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.role)
+
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.role)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@user.UserId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@user.UserId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@user.UserId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

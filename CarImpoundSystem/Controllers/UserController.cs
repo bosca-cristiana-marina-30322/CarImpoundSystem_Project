@@ -1,23 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CarImpoundSystem.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarImpoundSystem.Controllers
 {
     public class UserController : Controller
     {
-        public ActionResult SearchByLicensePlate(string licensePlate)
+
+        private readonly AppDBContext _context;
+        public UserController(AppDBContext context)
         {
+            _context = context;
+        }
 
+        //FIX THIS
+        public async Task<ActionResult> ViewImpounds(String? LicencePlate)
+        {
+            if (LicencePlate == null)
+            {
+                return NotFound();
+            }
 
-
-            return View();
+            var impound = await _context.impoundmentRecords.FindAsync(LicencePlate);
+            if (impound == null)
+            {
+                return NotFound();
+            }
+            return View(impound);
         }
         public IActionResult Index()
         {
-            return View();
+            var users = _context.users.ToList();
+            return View(users);
         }
         public IActionResult SearchByLicense()
         {
             return View();
+        }
+
+
+        public ActionResult Users()
+        {
+            var Users = _context.users.ToList(); // Fetch users from the database
+            return View(Users); // Pass users to the view
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿@{
-    ViewData["Title"] = "User Index";
+﻿
+@{
+    ViewData["Title"] = "Home";
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,13 +14,14 @@
 
     <div class="container">
         <div class="row mt-5">
-            <div class="col-md-6 offset-md-3">
-                <h2 class="text-center mb-4">Search By License Plate</h2>
-                <form method="post" asp-action="SearchByLicense">
-                    <div class="form-group>
-                        <label for="licensePlate">License Plate</label>
-                        <input type="text" class="form-control" id="licensePlate" name="licensePlate" placeholder="Enter License Plate">
-                 </form>
+            <div class="col-md-12 text-center">
+                <h1>Welcome to Car Impound System</h1>
+                <p class="lead">Manage impounded vehicles efficiently</p>
+                <a href="/Admin/Impounds" class="btn btn-primary">View Impounds</a>
+                <a href="/Admin/Users" class="btn btn-primary">View Users</a>
+                <p> OR </p>
+                <p>Chek car status</p>
+                <a href="/User/SearchByLicense" class="btn btn-primary">Check Car Status</a>
             </div>
         </div>
     </div>
