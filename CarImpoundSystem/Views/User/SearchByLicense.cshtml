@@ -19,7 +19,7 @@
         <div class="row mt-5">
             <div class="col-md-6 offset-md-3">
                 <h2 class="text-center mb-4">Search By License Plate</h2>
-                    <form asp-action="ViewImpound" asp-controller="User">
+                    <form asp-controller="User" asp-action="SearchImpound" method="get">
                     <input name="LicensePlate" class="form-control me-1" type="LicensePlate" placeholder="LicensePlate" aria-label="LicensePlate">
                         <button class="btn btn-dark" type="submit">Search by License</button>
                     </form>

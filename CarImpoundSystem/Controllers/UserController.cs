@@ -1,4 +1,5 @@
 ﻿using CarImpoundSystem.Data;
+using CarImpoundSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
@@ -16,25 +17,41 @@ namespace CarImpoundSystem.Controllers
 
 
         //FIX THIS
-        public async Task<ActionResult> ViewImpound()
+        //public async Task<ActionResult> ViewImpound()
+        //{
+        //    return View(await _context.impoundmentRecords.ToListAsync());
+        //}
+
+        [HttpGet]
+        public async Task<IActionResult> SearchImpound(string? LicensePlate)
         {
-            return View(await _context.impoundmentRecords.ToListAsync());
+
+
+            var impound =  _context.impoundmentRecords.Where( u  => u.LicensePlate == LicensePlate);
+
+
+
+            return View(impound);
         }
 
-        public async Task<IActionResult> Index(String LicensePlate)
+        public async Task<IActionResult> ImpoundDetails(string? id)
         {
-
-            var impound = await _context.impoundmentRecords.ToListAsync();
-
-            // Search functionality
-            if (!string.IsNullOrEmpty(LicensePlate))
+            if (id == null)
             {
-                impound = (List<Models.ImpoundmentRecord>)impound.Where(e => e.LicensePlate.Contains(LicensePlate));
+                return NotFound();
             }
 
-            
-            return View(ViewImpound);
+            var impound = await _context.impoundmentRecords.FindAsync(id);
+            if (impound == null)
+            {
+                return NotFound();
+            }
+            return View(impound);
+        }
 
+        public  IActionResult Index()
+        {
+            return View();
         }
 
 
