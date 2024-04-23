@@ -1,6 +1,7 @@
 ﻿using CarImpoundSystem.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace CarImpoundSystem.Controllers
 {
@@ -13,26 +14,30 @@ namespace CarImpoundSystem.Controllers
             _context = context;
         }
 
+
         //FIX THIS
-        public async Task<ActionResult> ViewImpounds(String? LicencePlate)
+        public async Task<ActionResult> ViewImpound()
         {
-            if (LicencePlate == null)
+            return View(await _context.impoundmentRecords.ToListAsync());
+        }
+
+        public async Task<IActionResult> Index(String LicensePlate)
+        {
+
+            var impound = await _context.impoundmentRecords.ToListAsync();
+
+            // Search functionality
+            if (!string.IsNullOrEmpty(LicensePlate))
             {
-                return NotFound();
+                impound = (List<Models.ImpoundmentRecord>)impound.Where(e => e.LicensePlate.Contains(LicensePlate));
             }
 
-            var impound = await _context.impoundmentRecords.FindAsync(LicencePlate);
-            if (impound == null)
-            {
-                return NotFound();
-            }
-            return View(impound);
+            
+            return View(ViewImpound);
+
         }
-        public IActionResult Index()
-        {
-            var users = _context.users.ToList();
-            return View(users);
-        }
+
+
         public IActionResult SearchByLicense()
         {
             return View();

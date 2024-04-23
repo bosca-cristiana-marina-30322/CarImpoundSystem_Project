@@ -19,13 +19,10 @@
         <div class="row mt-5">
             <div class="col-md-6 offset-md-3">
                 <h2 class="text-center mb-4">Search By License Plate</h2>
-                <form method="get" action="@Url.Action("ViewImpound", "User")">
-                    <div class="form-group">
-                        <label for="licensePlateInput">License Plate:</label>
-                        <input type="text" name="licensePlate" class="form-control" id="licensePlateInput" placeholder="Enter License Plate">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Search</button>
-                </form>
+                    <form asp-action="ViewImpound" asp-controller="User">
+                    <input name="LicensePlate" class="form-control me-1" type="LicensePlate" placeholder="LicensePlate" aria-label="LicensePlate">
+                        <button class="btn btn-dark" type="submit">Search by License</button>
+                    </form>
             </div>
         </div>
     </div> 
