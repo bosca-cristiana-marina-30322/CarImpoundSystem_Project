@@ -1,0 +1,39 @@
+﻿@model CarImpoundSystem.Models.User
+
+@{
+    ViewData["Title"] = "AddUser";
+}
+
+<h1>View</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Admin" asp-action="AddUser" method="post">
+            <div class="form-group">
+                <label asp-for="username" class="control-label"></label>
+                <input asp-for="username" class="form-control" />
+                <span asp-validation-for="username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="password" class="control-label"></label>
+                <input asp-for="password" class="form-control" />
+                <span asp-validation-for="password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="role" class="control-label"></label>
+                <input asp-for="role" class="form-control" />
+                <span asp-validation-for="role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-dark">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="ViewUsers">Back to List</a>
+</div>
+

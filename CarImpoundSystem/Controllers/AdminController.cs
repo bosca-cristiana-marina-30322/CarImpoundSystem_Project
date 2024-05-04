@@ -2,8 +2,12 @@
 using CarImpoundSystem.Models;
 using CarImpoundSystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Drawing.Printing;
 using System.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CarImpoundSystem.Controllers
 {
@@ -86,7 +90,7 @@ namespace CarImpoundSystem.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AdminIndex));
             }
             return View(impound);
         }
@@ -102,10 +106,45 @@ namespace CarImpoundSystem.Controllers
             return View(await _context.impoundmentRecords.ToListAsync());
         }
 
-        public async Task<ActionResult> Users()
+        public ActionResult AdminIndex()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> ViewUsers()
         {
             return View(await _context.users.ToListAsync());
         }
+
+        //GET: Employee/Add
+        [HttpGet]
+        public IActionResult AddUser()
+        {
+            return View();
+        }
+
+        //POST: Employee/Add
+        [HttpPost]
+        public async Task<IActionResult> AddUser(User user)
+        {
+            User model = new User()
+            {
+                username = user.username,
+                password = user.password,
+                role = user.role,
+            };
+            // Save the employee to the database
+            await _context.users.AddAsync(model);
+            await _context.SaveChangesAsync();
+
+            // Redirect to List all department page
+            return RedirectToAction("ViewUsers");
+        }
+
+
+        
+
+
 
         [HttpGet]
         public ActionResult Login(string username, string password)
@@ -117,7 +156,7 @@ namespace CarImpoundSystem.Controllers
             {
                 // Authentication successful, redirect to index page
                 // You may also want to implement actual authentication logic here
-                return RedirectToAction("ViewImpounds", "Admin");
+                return RedirectToAction("AdminIndex", "Admin");
             }
 
             // Authentication failed, display an error message
