@@ -3,6 +3,7 @@ using CarImpoundSystem.Models;
 using CarImpoundSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Drawing.Printing;
@@ -123,6 +124,7 @@ namespace CarImpoundSystem.Controllers
             return View();
         }
 
+
         //POST: Employee/Add
         [HttpPost]
         public async Task<IActionResult> AddUser(User user)
@@ -140,6 +142,37 @@ namespace CarImpoundSystem.Controllers
             // Redirect to List all department page
             return RedirectToAction("ViewUsers");
         }
+
+        //GET: Employee/Edit
+        [HttpGet]
+        public async Task<IActionResult> EditUser(int id)
+        {
+
+            //Fetch the employee details
+            var user = await _context.users.FindAsync(id);
+            return View(user);
+        }
+
+        //POST: Employee/Edit
+        [HttpPost]
+        public async Task<IActionResult> EditUser(User user)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(user); // Return to the form with validation errors
+            }
+            //Update the database with modified details
+            _context.users.Update(user);
+
+            // Redirect to List all department page
+            return RedirectToAction("ViewUsers", "Admin");
+        }
+        private bool UserExists(int user)
+        {
+            return _context.users.Any(e => e.UserId == user);
+        }
+
 
 
         

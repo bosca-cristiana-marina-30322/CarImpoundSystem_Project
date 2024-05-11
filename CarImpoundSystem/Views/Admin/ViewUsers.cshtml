@@ -40,9 +40,9 @@
                     @Html.DisplayFor(modelItem => user.role)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@user.UserId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@user.UserId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@user.UserId">Delete</a>
+                    <a asp-action="EditUser" asp-route-id="@user.UserId">Edit</a> |
+                    <a asp-action="DetailsUser" asp-route-id="@user.UserId">Details</a> |
+                    <a asp-action="DeleteUser" asp-route-id="@user.UserId">Delete</a>
                 </td>
             </tr>
         }
