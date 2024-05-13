@@ -101,7 +101,7 @@ namespace CarImpoundSystem.Controllers
         }
 
 
-
+        [HttpGet]
         public async Task<ActionResult> ViewImpounds()
         {
             return View(await _context.impoundmentRecords.ToListAsync());
@@ -143,30 +143,56 @@ namespace CarImpoundSystem.Controllers
             return RedirectToAction("ViewUsers");
         }
 
-        //GET: Employee/Edit
-        [HttpGet]
-        public async Task<IActionResult> EditUser(int id)
+        // GET: Employees/Edit/5
+        public async Task<IActionResult> EditUser(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            //Fetch the employee details
-            var user = await _context.users.FindAsync(id);
-            return View(user);
+            var employee = await _context.users.FindAsync(id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            return View(employee);
         }
 
-        //POST: Employee/Edit
+        // POST: Employees/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> EditUser(User user)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(int id, [Bind("Id,FirstName,LastName")] User user)
         {
-
-            if (!ModelState.IsValid)
+            if (id != user.UserId)
             {
-                return View(user); // Return to the form with validation errors
+                return NotFound();
             }
-            //Update the database with modified details
-            _context.users.Update(user);
 
-            // Redirect to List all department page
-            return RedirectToAction("ViewUsers", "Admin");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    int userid= user.UserId;
+                    if (!UserExists(userid))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(ViewUsers));
+            }
+            return View(ViewUsers);
         }
         private bool UserExists(int user)
         {

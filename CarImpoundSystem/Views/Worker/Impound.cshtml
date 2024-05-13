@@ -28,15 +28,10 @@
                 <span asp-validation-for="reason" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="status" class="control-label"></label>
-                <input asp-for="status" class="form-control" />
-                <span asp-validation-for="status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="LicensePlate" class="control-label"></label>
                 <select asp-for="LicensePlate" class ="form-control" asp-items="ViewBag.LicensePlate"></select>
                 <p> Cannot find it?</p>
-               <a href="/Worker/RegisterVehicle" class="btn btn-primary">Register Vehicle</a>
+                <a asp-action="RegisterVehicle">Register new vehicle</a>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

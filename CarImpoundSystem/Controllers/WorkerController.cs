@@ -72,7 +72,7 @@ namespace CarImpoundSystem.Controllers
                     location = impoundmentRecord.location,
                     reason = impoundmentRecord.reason,
                     LicensePlate = impoundmentRecord.LicensePlate,
-                    status = impoundmentRecord.status,
+                    status = "in",
                 };
 
                 // Save the impoundmentRecord to the database
