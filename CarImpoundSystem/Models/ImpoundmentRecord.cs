@@ -6,7 +6,8 @@ namespace CarImpoundSystem.Models
         public class ImpoundmentRecord
         {
         [Key]
-            public string recordId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string recordId { get; set; }
 
             public DateTime date { get; set; }
 

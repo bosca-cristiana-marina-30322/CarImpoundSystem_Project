@@ -1,38 +1,49 @@
-﻿@model CarImpoundSystem.Models.ImpoundmentRecord
+﻿@model Tuple<CarImpoundSystem.Models.ImpoundmentRecord, List<CarImpoundSystem.Models.Vehicle>>
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Impound";
 }
 
-<h1>View</h1>
+<h1>Impound</h1>
 
-<h4>ImpoundmentRecord</h4>
+<h4>Impoundment Record</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="View">
+        <form asp-action="Impound">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="recordId" />
+            <input type="hidden" asp-for="Item1.recordId" />
             <div class="form-group">
-                <label asp-for="date" class="control-label"></label>
-                <input asp-for="date" class="form-control" />
-                <span asp-validation-for="date" class="text-danger"></span>
+                <label asp-for="Item1.date" class="control-label"></label>
+                <input asp-for="Item1.date" class="form-control" />
+                <span asp-validation-for="Item1.date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="location" class="control-label"></label>
-                <input asp-for="location" class="form-control" />
-                <span asp-validation-for="location" class="text-danger"></span>
+                <label asp-for="Item1.location" class="control-label"></label>
+                <input asp-for="Item1.location" class="form-control" />
+                <span asp-validation-for="Item1.location" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="reason" class="control-label"></label>
-                <input asp-for="reason" class="form-control" />
-                <span asp-validation-for="reason" class="text-danger"></span>
+                <label asp-for="Item1.reason" class="control-label"></label>
+                <input asp-for="Item1.reason" class="form-control" />
+                <span asp-validation-for="Item1.reason" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
-                <label asp-for="LicensePlate" class="control-label"></label>
-                <input asp-for="LicensePlate" class="form-control" asp-items="ViewBag.LicensePlate"></input>
-                <span asp-validation-for="LicensePlate" class="text-danger"></span>
+                <label asp-for="Item1.LicensePlate" class="control-label"></label>
+                <select asp-for="Item1.LicensePlate" class="form-control">
+                    @foreach (var vehicle in Model.Item2)
+                    {
+                        <option value="@vehicle.LicensePlate">@vehicle.LicensePlate</option>
+                    }
+                </select>
+                <span asp-validation-for="Item1.LicensePlate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Item1.status" class="control-label"></label>
+                <input asp-for="Item1.status" class="form-control" />
+                <span asp-validation-for="Item1.status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -46,5 +57,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
