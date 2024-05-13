@@ -1,5 +1,6 @@
 using CarImpoundSystem.Data;
 using CarImpoundSystem.Services;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,9 @@ builder.Services.AddAuthorization();
 
 // Register AuthService
 builder.Services.AddScoped<AuthService>();
+
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
 
 var app = builder.Build();
 
@@ -37,5 +41,12 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "deleteUser",
+    pattern: "Admin/DeleteUser/{id}",
+    defaults: new { controller = "Admin", action = "DeleteUser" },
+    constraints: new { httpsMethod = new HttpMethodRouteConstraint("DELETE") });
+
 
 app.Run();

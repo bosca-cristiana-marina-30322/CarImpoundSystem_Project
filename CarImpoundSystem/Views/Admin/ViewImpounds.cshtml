@@ -61,11 +61,13 @@
                 @Html.DisplayFor(modelItem => item.User.UserId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.vehicle.LicensePlate)
+                @Html.DisplayFor(modelItem => item.LicensePlate)
             </td>
             <td>
-                <a asp-action="EditImpound" asp-route-id="@item.recordId">Edit</a> |
-                <a asp-action="DetailsImpound" asp-route-id="@item.recordId">Details</a> |
+                  
+               <a asp-action="EditImpound" asp-route-id="@item.recordId">Edit</a>
+                    
+                <a asp-action="DetailsImpound" asp-route-id="@item.recordId">Details</a> 
                 <a asp-action="DeleteImpound" asp-route-id="@item.recordId">Delete</a>
             </td>
         </tr>

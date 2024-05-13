@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.date)
             </th>
+            <td>
+                    @Html.DisplayNameFor(model => model.LicensePlate)
+            </td>
             <th>
                 @Html.DisplayNameFor(model => model.location)
             </th>
@@ -48,6 +51,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.date)
             </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LicensePlate)
+                    </td>
             <td>
                 @Html.DisplayFor(modelItem => item.location)
             </td>
@@ -63,9 +69,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.User.UserId)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.vehicle.LicensePlate)
-            </td>
+          
             <td>
                 <a asp-action="Edit" asp-route-id="@item.recordId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.recordId">Details</a> |

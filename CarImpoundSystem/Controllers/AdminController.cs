@@ -49,26 +49,37 @@ namespace CarImpoundSystem.Controllers
             }
             return View(impound);
         }
-
-        public async Task<IActionResult> EditImpound(String? recordid)
+        public IActionResult ChangeImpound()
         {
-            if (recordid == null)
+            // Add any necessary logic here
+            return View();
+        }
+        // GET: Vehicle/EditImpound/5
+
+        // GET: Impound/EditImpound/5
+        [HttpGet]
+        public async Task<IActionResult> EditImpound(string id)
+        {
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var impoundment = await _context.impoundmentRecords.FindAsync(recordid);
-            if (impoundment == null)
+            var impound = await _context.impoundmentRecords.FindAsync(id);
+            if (impound == null)
             {
                 return NotFound();
             }
-            return View(impoundment);
+
+            return View(impound);
         }
+
+        // POST: Impound/EditImpound/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditImpound(String recordId, [Bind("Id,FirstName,LastName")] ImpoundmentRecord impound)
+        public async Task<IActionResult> EditImpound(string id, [Bind("recordId, status, payment")] ImpoundmentRecord impound)
         {
-            if (recordId != impound.recordId)
+            if (id != impound.recordId || id == null)
             {
                 return NotFound();
             }
@@ -77,8 +88,24 @@ namespace CarImpoundSystem.Controllers
             {
                 try
                 {
-                    _context.Update(recordId);
+                    // Retrieve the existing impound record from the database
+                    var existingRecord = await _context.impoundmentRecords.FindAsync(id);
+
+                    if (existingRecord == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Update the fields
+                    existingRecord.status = impound.status;
+                    existingRecord.payment = impound.payment;
+
+                    // Save changes to the database
+                    _context.Update(existingRecord);
                     await _context.SaveChangesAsync();
+
+                    // Redirect to the ViewImpounds action
+                    return RedirectToAction("ViewImpounds");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -91,22 +118,20 @@ namespace CarImpoundSystem.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(AdminIndex));
             }
+            // If ModelState is not valid, return the view with validation errors
             return View(impound);
         }
+
+
+
         private bool ImpoundmentRecordExists(string impound)
         {
             return _context.impoundmentRecords.Any(e => e.recordId == impound);
         }
 
 
-        [HttpGet]
-        public async Task<ActionResult> ViewImpounds()
-        {
-            return View(await _context.impoundmentRecords.ToListAsync());
-        }
-
+   
         public ActionResult AdminIndex()
         {
             return View();
@@ -142,7 +167,12 @@ namespace CarImpoundSystem.Controllers
             // Redirect to List all department page
             return RedirectToAction("ViewUsers");
         }
-
+        [HttpGet]
+        public async Task<IActionResult> ViewImpounds()
+        {
+            var impounds = await _context.impoundmentRecords.ToListAsync();
+            return View(impounds);
+        }
         // GET: Employees/Edit/5
         public async Task<IActionResult> EditUser(int? id)
         {
@@ -194,15 +224,27 @@ namespace CarImpoundSystem.Controllers
             }
             return View(ViewUsers);
         }
+
         private bool UserExists(int user)
         {
             return _context.users.Any(e => e.UserId == user);
         }
 
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _context.users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-        
+            _context.users.Remove(user);
+            await _context.SaveChangesAsync();
 
+            return RedirectToAction(nameof(ViewUsers));
+        }
 
 
         [HttpGet]
