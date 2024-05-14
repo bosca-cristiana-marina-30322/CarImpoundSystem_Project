@@ -173,11 +173,19 @@ namespace CarImpoundSystem.Controllers
 
         // GET: Home
         [HttpGet]
-        public ActionResult EditUser(int id)
+        public async Task<ActionResult> EditUser(int id)
         {
-            var user = _context.users.FindAsync(id);
+            System.Diagnostics.Debug.WriteLine("EditUser get method started");
+            System.Diagnostics.Debug.WriteLine($"EditUser action method started for Id: {id}");
+
+            var user = await _context.users.FindAsync(id);
+            System.Diagnostics.Debug.WriteLine($"EditUser action method found user: {user.UserId}");
+
+            System.Diagnostics.Debug.WriteLine($"REturning user: {user.UserId}");
+
             return View(user);
         }
+
 
         [HttpPost]
         public async Task<ActionResult> EditUser(User user)

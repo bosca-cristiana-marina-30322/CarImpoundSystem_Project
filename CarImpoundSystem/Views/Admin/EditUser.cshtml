@@ -10,9 +10,9 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditUser">
+        <form asp-action="EditUser" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" name="id" value="@Model.UserId" /> <!-- Add this line -->
+            <input type="hidden" asp-for="UserId" /> <!-- Add this line -->
             <div class="form-group">
                 <label asp-for="username" class="control-label"></label>
                 <input asp-for="username" class="form-control" />
