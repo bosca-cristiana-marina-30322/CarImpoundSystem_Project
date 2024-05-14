@@ -226,23 +226,18 @@ namespace CarImpoundSystem.Controllers
 
 
 
-
-
-
-
-        [HttpDelete]
-        public async Task<IActionResult> DeleteUser(int id)
+        public IActionResult DeleteUser(int id)
         {
-            var user = await _context.users.FindAsync(id);
+            var user =  _context.users.Find(id);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("ViewUsers");
             }
 
             _context.users.Remove(user);
-            await _context.SaveChangesAsync();
+            _context.SaveChangesAsync(true);
 
-            return RedirectToAction(nameof(ViewUsers));
+            return RedirectToAction("ViewUsers");
         }
 
 
