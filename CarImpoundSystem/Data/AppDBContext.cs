@@ -12,5 +12,7 @@ namespace CarImpoundSystem.Data
         public DbSet<ImpoundmentRecord> impoundmentRecords { get; set; }
         public DbSet<Payment> payments { get; set; }
         public DbSet<User> users { get; set; }
+
+
     }
 }

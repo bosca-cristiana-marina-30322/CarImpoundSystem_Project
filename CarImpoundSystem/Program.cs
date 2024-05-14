@@ -47,6 +47,12 @@ app.MapControllerRoute(
     pattern: "Admin/DeleteUser/{id}",
     defaults: new { controller = "Admin", action = "DeleteUser" },
     constraints: new { httpsMethod = new HttpMethodRouteConstraint("DELETE") });
+app.MapControllerRoute(
+    name: "adminEditUser",
+    pattern: "Admin/EditUser/{id?}",
+    defaults: new { controller = "Admin", action = "EditUser" }
+);
+
 
 
 app.Run();

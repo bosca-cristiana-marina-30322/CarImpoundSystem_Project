@@ -1,14 +1,10 @@
 ﻿using CarImpoundSystem.Data;
 using CarImpoundSystem.Models;
-using CarImpoundSystem.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Drawing.Printing;
-using System.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using NServiceKit.Text;
 
 namespace CarImpoundSystem.Controllers
 {
@@ -131,7 +127,7 @@ namespace CarImpoundSystem.Controllers
         }
 
 
-   
+
         public ActionResult AdminIndex()
         {
             return View();
@@ -173,62 +169,57 @@ namespace CarImpoundSystem.Controllers
             var impounds = await _context.impoundmentRecords.ToListAsync();
             return View(impounds);
         }
-        // GET: Employees/Edit/5
-        public async Task<IActionResult> EditUser(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var employee = await _context.users.FindAsync(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            return View(employee);
+
+        // GET: Home
+        [HttpGet]
+        public ActionResult EditUser(int id)
+        {
+            var user = _context.users.FindAsync(id);
+            return View(user);
         }
 
-        // POST: Employees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(int id, [Bind("Id,FirstName,LastName")] User user)
+        public async Task<ActionResult> EditUser(User user)
         {
-            if (id != user.UserId)
+            
+            System.Diagnostics.Debug.WriteLine("EditUser action method started");
+            System.Diagnostics.Debug.WriteLine($"EditUser action method started for UserId: {user.UserId}");
+
+
+            // Retrieve the existing user from the database based on its ID
+            var updatedUser = await _context.users.FindAsync(user.UserId);
+
+            if (updatedUser != null)
             {
-                return NotFound();
+                System.Diagnostics.Debug.WriteLine($"User found: {updatedUser.UserId}, {updatedUser.username}, {updatedUser.password}, {updatedUser.role}");
+
+                // Update the properties of the existing user
+                updatedUser.username = user.username;
+                updatedUser.password = user.password;
+                updatedUser.role = user.role;
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+
+                System.Diagnostics.Debug.WriteLine("User record updated.");
+                ViewBag.Message = "User record updated.";
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("User not found.");
+                ViewBag.Message = "User not found.";
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    int userid= user.UserId;
-                    if (!UserExists(userid))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(ViewUsers));
-            }
-            return View(ViewUsers);
+            System.Diagnostics.Debug.WriteLine("EditUser action method completed");
+
+            return RedirectToAction("ViewUsers");
         }
 
-        private bool UserExists(int user)
-        {
-            return _context.users.Any(e => e.UserId == user);
-        }
+
+
+
+
 
 
         [HttpDelete]
