@@ -240,6 +240,18 @@ namespace CarImpoundSystem.Controllers
             return RedirectToAction("ViewUsers");
         }
 
+        [HttpGet]
+        public IActionResult DetailsUser(int id)
+        {
+            var user = _context.users.Find(id);
+            if (user == null)
+            {
+                return RedirectToAction("ViewUsers");
+            }
+
+            return View(user);
+        }
+
 
         [HttpGet]
         public ActionResult Login(string username, string password)
