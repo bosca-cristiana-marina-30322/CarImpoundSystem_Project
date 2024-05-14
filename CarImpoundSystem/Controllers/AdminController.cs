@@ -119,6 +119,19 @@ namespace CarImpoundSystem.Controllers
             return View(impound);
         }
 
+        public IActionResult DeleteImpound(string id)
+        {
+            var imp = _context.impoundmentRecords.Find(id);
+            if (imp == null)
+            {
+                return RedirectToAction("ViewImpounds");
+            }
+
+            _context.impoundmentRecords.Remove(imp);
+            _context.SaveChanges(true);
+
+            return RedirectToAction("ViewImpounds");
+        }
 
 
         private bool ImpoundmentRecordExists(string impound)
