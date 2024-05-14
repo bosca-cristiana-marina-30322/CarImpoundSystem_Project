@@ -13,7 +13,7 @@
 </head>
 <body>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Impound">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -27,21 +27,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.location)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.reason)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.payment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.vehicle)
-            </th>
+            
             <th></th>
         </tr>
     </thead>
@@ -57,23 +43,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.location)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.reason)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.payment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserId)
-            </td>
+           
           
             <td>
-                <a asp-action="Edit" asp-route-id="@item.recordId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.recordId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.recordId">Delete</a>
+              
             </td>
         </tr>
 }
