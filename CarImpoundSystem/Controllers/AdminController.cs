@@ -82,6 +82,8 @@ namespace CarImpoundSystem.Controllers
             }
 
             var impound = await _context.impoundmentRecords.FindAsync(id);
+            var vehicle = await _context.vehicles.FindAsync(impound.LicensePlate);
+            var user = await _context.users.FindAsync(impound.UserId);
             if (impound == null)
             {
                 return NotFound();
