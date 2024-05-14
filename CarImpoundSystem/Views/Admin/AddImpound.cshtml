@@ -4,7 +4,7 @@
     ViewData["Title"] = "AddImpound";
 }
 
-<h1>AddImpound</h1>
+<h1>Impound</h1>
 
 <h4>ImpoundmentRecord</h4>
 <hr />
@@ -13,9 +13,11 @@
         <form asp-action="AddImpound">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="recordId" class="control-label"></label>
-                <input asp-for="recordId" class="form-control" />
-                <span asp-validation-for="recordId" class="text-danger"></span>
+                <label asp-for="LicensePlate" class="control-label"></label>
+                <select asp-for="LicensePlate" class="form-control" asp-items="ViewBag.LicensePlate"></select>
+                <p> Cannot find it?</p>
+                <a asp-action="RegisterVehicle">Register new vehicle</a>
+
             </div>
             <div class="form-group">
                 <label asp-for="date" class="control-label"></label>
@@ -32,24 +34,8 @@
                 <input asp-for="reason" class="form-control" />
                 <span asp-validation-for="reason" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="payment" class="control-label"></label>
-                <input asp-for="payment" class="form-control" />
-                <span asp-validation-for="payment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="status" class="control-label"></label>
-                <input asp-for="status" class="form-control" />
-                <span asp-validation-for="status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="LicensePlate" class="control-label"></label>
-                <select asp-for="LicensePlate" class ="form-control" asp-items="ViewBag.LicensePlate"></select>
-            </div>
+            
+            <br>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -58,6 +44,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="ViewImpounds">Back to List</a>
 </div>
 

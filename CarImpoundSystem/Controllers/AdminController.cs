@@ -2,6 +2,8 @@
 using CarImpoundSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NServiceKit.Text;
@@ -12,22 +14,63 @@ namespace CarImpoundSystem.Controllers
     {
         private readonly AppDBContext _context;
 
+        /// <summary>
+        /// DATABASE CONTEXT
+        /// </summary>
+        /// <param name="context"></param>
+
         public AdminController(AppDBContext context)
         {
             _context = context;
         }
 
-        public ActionResult UpdateVehicleStatus(Vehicle vehicle, string status)
+        /// <summary>
+        /// LOGIN
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+
+        [HttpGet]
+        public ActionResult Login(string username, string password)
         {
+            var user = _context.users.FirstOrDefault(u => u.username == username);
+            // Perform authentication here (e.g., check credentials against database)
+            // For simplicity, let's assume username is "admin" and password is "password"
+            if (user != null && user.password == password && user.role == "admin")
+            {
+                // Authentication successful, redirect to index page
+                // You may also want to implement actual authentication logic here
+                return RedirectToAction("AdminIndex", "Admin");
+            }
+
+            // Authentication failed, display an error message
+            ViewBag.ErrorMessage = "Invalid username or password.";
 
             return View();
         }
 
+        /// <summary>
+        /// ADMIN INDEX
+        /// </summary>
+        /// <returns></returns>
 
-        public ActionResult ProcessVehicle(Vehicle vehicle)
+        public ActionResult AdminIndex()
         {
-
             return View();
+        }
+
+        /// <summary>
+        /// IMPUNDMENT RECORDS MANAGEMENT
+        /// </summary>
+        /// <returns></returns>
+
+
+        [HttpGet]
+        public async Task<IActionResult> ViewImpounds()
+        {
+            var impounds = await _context.impoundmentRecords.ToListAsync();
+            return View(impounds);
         }
 
 
@@ -45,79 +88,114 @@ namespace CarImpoundSystem.Controllers
             }
             return View(impound);
         }
-        public IActionResult ChangeImpound()
+
+        [HttpGet]
+        public IActionResult AddImpound()
         {
-            // Add any necessary logic here
+            var vehicles = _context.vehicles.ToList();
+            var vehicleList = new SelectList(vehicles, "LicensePlate", "LicensePlate");
+            ViewBag.LicensePlate = vehicleList;
             return View();
         }
-        // GET: Vehicle/EditImpound/5
 
-        // GET: Impound/EditImpound/5
-        [HttpGet]
-        public async Task<IActionResult> EditImpound(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var impound = await _context.impoundmentRecords.FindAsync(id);
-            if (impound == null)
-            {
-                return NotFound();
-            }
-
-            return View(impound);
-        }
-
-        // POST: Impound/EditImpound/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditImpound(string id, [Bind("recordId, status, payment")] ImpoundmentRecord impound)
+        public async Task<IActionResult> AddImpound(ImpoundmentRecord impoundmentRecord)
         {
-            if (id != impound.recordId || id == null)
+            // Create an instance of ImpoundmentRecord and populate its properties
+            var model = new ImpoundmentRecord
             {
-                return NotFound();
-            }
+                date = impoundmentRecord.date,
+                location = impoundmentRecord.location,
+                reason = impoundmentRecord.reason,
+                LicensePlate = impoundmentRecord.LicensePlate,
+                status = "in",
+            };
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // Retrieve the existing impound record from the database
-                    var existingRecord = await _context.impoundmentRecords.FindAsync(id);
+            // Save the impoundmentRecord to the database
+            await _context.impoundmentRecords.AddAsync(model);
+            await _context.SaveChangesAsync();
 
-                    if (existingRecord == null)
-                    {
-                        return NotFound();
-                    }
+            // Redirect to the view with the list of impoundment records
+            return RedirectToAction("ViewImpounds");
 
-                    // Update the fields
-                    existingRecord.status = impound.status;
-                    existingRecord.payment = impound.payment;
-
-                    // Save changes to the database
-                    _context.Update(existingRecord);
-                    await _context.SaveChangesAsync();
-
-                    // Redirect to the ViewImpounds action
-                    return RedirectToAction("ViewImpounds");
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (ImpoundmentRecordExists(impound.recordId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
-            // If ModelState is not valid, return the view with validation errors
-            return View(impound);
         }
+        [HttpGet]
+        public ActionResult RegisterVehicle()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterVehicle(Vehicle vehicle)
+        {
+            Vehicle model = new Vehicle()
+            {
+
+                LicensePlate = vehicle.LicensePlate,
+                VIN = vehicle.VIN,
+                Make = vehicle.Make,
+                Model = vehicle.Model,
+                Color = vehicle.Color,
+                Status = vehicle.Status,
+            };
+
+
+            await _context.vehicles.AddAsync(model);
+            await _context.SaveChangesAsync();
+
+            // Redirect to the form to add impoundment record after registering the vehicle
+            return RedirectToAction("AddImpound");
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult> EditImpound(string id)
+        {
+            System.Diagnostics.Debug.WriteLine("EditImpound get method started");
+            System.Diagnostics.Debug.WriteLine($"EditImpound action method started for Id: {id}");
+
+            var record = await _context.impoundmentRecords.FindAsync(id);
+            System.Diagnostics.Debug.WriteLine($"EditImpound action method found record: {record.recordId}");
+
+            System.Diagnostics.Debug.WriteLine($"Returning record: {record.recordId}");
+
+            return View(record);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EditImpound(ImpoundmentRecord record)
+        {
+            System.Diagnostics.Debug.WriteLine("EditImpound action method started");
+            System.Diagnostics.Debug.WriteLine($"EditImpound action method started for RecordId: {record.recordId}");
+
+            // Retrieve the existing record from the database based on its ID
+            var updatedRecord = await _context.impoundmentRecords.FindAsync(record.recordId);
+
+            if (updatedRecord != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"Record found: {updatedRecord.recordId}, {updatedRecord.payment}, {updatedRecord.status}");
+
+                // Update the properties of the existing record
+                updatedRecord.payment = record.payment;
+                updatedRecord.status = record.status;
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+
+                System.Diagnostics.Debug.WriteLine("Record updated.");
+                ViewBag.Message = "Record updated.";
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Record not found.");
+                ViewBag.Message = "Record not found.";
+            }
+
+            System.Diagnostics.Debug.WriteLine("EditImpound action method completed");
+
+            return RedirectToAction("ViewImpounds");
+        }
+
 
         public IActionResult DeleteImpound(string id)
         {
@@ -140,11 +218,10 @@ namespace CarImpoundSystem.Controllers
         }
 
 
-
-        public ActionResult AdminIndex()
-        {
-            return View();
-        }
+        /// <summary>
+        /// USER MANAGEMENT
+        /// </summary>
+        /// <returns></returns>
 
         public async Task<ActionResult> ViewUsers()
         {
@@ -157,7 +234,6 @@ namespace CarImpoundSystem.Controllers
         {
             return View();
         }
-
 
         //POST: Employee/Add
         [HttpPost]
@@ -175,12 +251,6 @@ namespace CarImpoundSystem.Controllers
 
             // Redirect to List all department page
             return RedirectToAction("ViewUsers");
-        }
-        [HttpGet]
-        public async Task<IActionResult> ViewImpounds()
-        {
-            var impounds = await _context.impoundmentRecords.ToListAsync();
-            return View(impounds);
         }
 
 
@@ -266,23 +336,6 @@ namespace CarImpoundSystem.Controllers
         }
 
 
-        [HttpGet]
-        public ActionResult Login(string username, string password)
-        {
-            var user = _context.users.FirstOrDefault(u => u.username == username);
-            // Perform authentication here (e.g., check credentials against database)
-            // For simplicity, let's assume username is "admin" and password is "password"
-            if (user != null && user.password == password && user.role == "admin")
-            {
-                // Authentication successful, redirect to index page
-                // You may also want to implement actual authentication logic here
-                return RedirectToAction("AdminIndex", "Admin");
-            }
 
-            // Authentication failed, display an error message
-            ViewBag.ErrorMessage = "Invalid username or password.";
-
-            return View();
-        }
     }
 }

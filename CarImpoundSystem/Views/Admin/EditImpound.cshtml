@@ -1,7 +1,7 @@
 ﻿@model CarImpoundSystem.Models.ImpoundmentRecord
 
 @{
-    ViewData["Title"] = "EditImpound";
+    ViewData["Title"] = "Edit Impound";
 }
 
 <h1>Edit Impound</h1>
@@ -9,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditImpound">
+        <form asp-action="EditImpound" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="recordId" />
             <div class="form-group">
@@ -30,5 +30,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="ViewImpounds">Back to List</a>
 </div>
