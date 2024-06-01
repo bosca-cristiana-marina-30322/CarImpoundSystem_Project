@@ -20,6 +20,8 @@ builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
+builder.Services.AddHostedService<DailyPaymentUpdateService>();
+
 
 var app = builder.Build();
 
