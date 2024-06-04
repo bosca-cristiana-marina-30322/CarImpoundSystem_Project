@@ -44,9 +44,15 @@ namespace CarImpoundSystem.Controllers
                 return RedirectToAction("AdminIndex", "Admin");
             }
 
-            // Authentication failed, display an error message
-            ViewBag.ErrorMessage = "Invalid username or password.";
-
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                ViewBag.ErrorMessage = "Invalid username or password.";
+                ViewBag.ShowPopup = true;
+            }
+            else
+            {
+                ViewBag.ShowPopup = false;
+            }
             return View();
         }
 
