@@ -96,15 +96,23 @@ namespace CarImpoundSystem.Controllers
             var user = _context.users.FirstOrDefault(u => u.username == username);
             // Perform authentication here (e.g., check credentials against database)
             // For simplicity, let's assume username is "admin" and password is "password"
-            if (user != null && user.password == password && user.role == "worker")
+            if (user != null && user.password == password && user.role == "Worker")
             {
                 // Authentication successful, redirect to index page
                 // You may also want to implement actual authentication logic here
                 return RedirectToAction("Index", "Worker");
             }
 
-            // Authentication failed, display an error message
-            ViewBag.ErrorMessage = "Invalid username or password.";
+
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                ViewBag.ErrorMessage = "Invalid username or password.";
+                ViewBag.ShowPopup = true;
+            }
+            else
+            {
+                ViewBag.ShowPopup = false;
+            }
             return View();
         }
         public IActionResult Error()

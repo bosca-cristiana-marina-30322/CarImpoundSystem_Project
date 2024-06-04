@@ -37,7 +37,7 @@ namespace CarImpoundSystem.Controllers
             var user = _context.users.FirstOrDefault(u => u.username == username);
             // Perform authentication here (e.g., check credentials against database)
             // For simplicity, let's assume username is "admin" and password is "password"
-            if (user != null && user.password == password && user.role == "admin")
+            if (user != null && user.password == password && user.role == "Admin")
             {
                 // Authentication successful, redirect to index page
                 // You may also want to implement actual authentication logic here
