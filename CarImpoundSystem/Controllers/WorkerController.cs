@@ -65,14 +65,15 @@ namespace CarImpoundSystem.Controllers
         {
             // Check if the selected vehicle exists
 
-                // Create an instance of ImpoundmentRecord and populate its properties
-                var model = new ImpoundmentRecord
-                {
-                    date = impoundmentRecord.date,
-                    location = impoundmentRecord.location,
-                    reason = impoundmentRecord.reason,
-                    LicensePlate = impoundmentRecord.LicensePlate,
-                    status = "in",
+            // Create an instance of ImpoundmentRecord and populate its properties
+            var model = new ImpoundmentRecord
+            {
+                date = impoundmentRecord.date,
+                location = impoundmentRecord.location,
+                reason = impoundmentRecord.reason,
+                LicensePlate = impoundmentRecord.LicensePlate,
+                status = "in",
+                payment = 300
                 };
 
                 // Save the impoundmentRecord to the database
