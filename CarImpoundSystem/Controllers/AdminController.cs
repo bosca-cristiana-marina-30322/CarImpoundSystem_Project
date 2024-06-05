@@ -9,10 +9,11 @@ namespace CarImpoundSystem.Controllers
     public class AdminController : Controller
     {
         private readonly AppDBContext _context;
-
-        public AdminController(AppDBContext context)
+        private readonly ILogger<AdminController> _logger;
+        public AdminController(AppDBContext context,ILogger<AdminController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public ActionResult Login(string username, string password)
@@ -55,14 +56,17 @@ namespace CarImpoundSystem.Controllers
             }
 
             var impound = await _context.impoundmentRecords
-                                        .Include(ir => ir.User)
-                                        .Include(ir => ir.vehicle)
-                                        .FirstOrDefaultAsync(ir => ir.recordId == id);
+                            .Include(ir => ir.User)
+                            .Include(ir => ir.vehicle)
+                            .FirstOrDefaultAsync(ir => ir.recordId == id);
 
             if (impound == null)
             {
                 return NotFound();
             }
+
+            _logger.LogInformation($"Retrieved Impound Record: {impound.recordId}, User: {impound.User?.username}, Vehicle: {impound.vehicle?.LicensePlate}");
+
             return View(impound);
         }
 
